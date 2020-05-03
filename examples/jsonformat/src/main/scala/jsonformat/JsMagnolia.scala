@@ -142,9 +142,9 @@ object JsMagnoliaDecoder {
                   case Maybe.Just(value) => p.typeclass.fromJson(value)
                   case _                 =>
                     p.default match {
-                      case Some(default)          => \/-(default)
+                      case Some(default)          => \/-[String, p.PType](default)
                       case None if nulls(p.index) =>
-                        s"missing field '$field'".left
+                        s"missing field '$field'".left[p.PType]
                       case None                   => p.typeclass.fromJson(JsNull)
                     }
                 }
